@@ -9,8 +9,8 @@ async fn hello() -> &'static str {
 async fn main() {
     tracing_subscriber::fmt().init();
 
-    let port = std::env::var("PORT").expect("miss PORT");
+    let port = std::env::var("PORT").ok().expect("miss PORT");
     let router = Router::new().get(hello);
-    let acceptor = TcpListener::new(format!("127.0.0.1:{port}")).bind().await;
+    let acceptor = TcpListener::new(format!("0.0.0.0:{port}")).bind().await;
     Server::new(acceptor).serve(router).await;
 }
